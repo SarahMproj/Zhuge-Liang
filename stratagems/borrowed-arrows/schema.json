@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/zhuge-liang/borrowed-arrows.schema.json",
+  "title": "Borrowed Arrows Run",
+  "type": "object",
+  "required": [
+    "run_id",
+    "mission",
+    "target_summary",
+    "critics",
+    "attacks",
+    "assets",
+    "recommendation"
+  ],
+  "properties": {
+    "run_id": { "type": "string" },
+    "mission": { "type": "string", "minLength": 1 },
+    "target_summary": { "type": "string", "minLength": 1 },
+    "boundaries": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "critics": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "role", "mandate"],
+        "properties": {
+          "id": { "type": "string" },
+          "role": { "type": "string" },
+          "mandate": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "attacks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "critic_id",
+          "target",
+          "attack",
+          "impact",
+          "confidence",
+          "status"
+        ],
+        "properties": {
+          "id": { "type": "string" },
+          "critic_id": { "type": "string" },
+          "target": { "type": "string" },
+          "attack": { "type": "string" },
+          "impact": { "type": "string" },
+          "reasoning": { "type": "string" },
+          "evidence": {
+            "type": "array",
+            "items": { "type": "string" },
+            "default": []
+          },
+          "verification_method": { "type": "string" },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "status": {
+            "type": "string",
+            "enum": ["accepted", "rejected", "duplicate", "unresolved"]
+          },
+          "rejection_reason": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "source_attack_ids",
+          "type",
+          "description",
+          "priority",
+          "next_action",
+          "completion_condition"
+        ],
+        "properties": {
+          "id": { "type": "string" },
+          "source_attack_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string" }
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "requirement",
+              "test_case",
+              "experiment",
+              "research_question",
+              "risk",
+              "mitigation",
+              "stakeholder_response",
+              "positioning_change",
+              "operational_action"
+            ]
+          },
+          "description": { "type": "string" },
+          "expected_benefit": { "type": "string" },
+          "priority": {
+            "type": "string",
+            "enum": ["critical", "high", "medium", "low"]
+          },
+          "owner": { "type": "string" },
+          "next_action": { "type": "string" },
+          "completion_condition": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "invalidated_assumptions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "unresolved_disagreements": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "recommendation": {
+      "type": "object",
+      "required": ["decision", "rationale", "supporting_attack_ids"],
+      "properties": {
+        "decision": {
+          "type": "string",
+          "enum": ["proceed", "proceed_with_changes", "pause_for_evidence", "stop"]
+        },
+        "rationale": { "type": "string" },
+        "supporting_attack_ids": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
